@@ -2,59 +2,36 @@
 <html>
     <head>
         <title>KGOLF Booking</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <style>
-            h1 {
-                font-size: 80px;
-                font-family: Roboto;
-                font-weight: normal;
-                color: rgb(180, 180, 180);
-                text-align: center;
-            }
-
             #logo_banner {
                 width: 50%;
                 height: 200px;        
-                object-fit:scale-down;        
-            }
-
-            h2 {
-                font-family: 'Times New Roman', Times, serif;
-                font-size: 32px;
-                color: rgb(100, 100, 100);
-                text-align: center;
-                font-weight: normal;
-            }
-
-            .bodytext {
-                font-family: 'Times New Roman', Times, serif;
-                color: rgb(80, 80, 80);
-            }
-
-            #container {
-                max-width: 720px;
-                margin: 0 auto 0 auto;
-            }
-
-            .centerTextAlign {
-                text-align: center;
+                object-fit:scale-down; 
             }
         </style>
     </head>
     <body>
-        <div id="container">
-            <h1>Welcome to KGOLF booking</h1>
-            <img id="logo_banner" src="/static/kgolf_logo.jpg">
-            <h2>Rules</h2>
-            <p class="bodytext">
+        <div class="container">
+            <h1 class="text-center mt-2 mb-4">Welcome to KGOLF booking</h1>
+            <img class="img-fluid" id="logo_banner" src="/static/kgolf_logo.jpg">
+            <h2 class="text-center mt-2 mb-4">{{company_name}} Rules</h2>
+            <p class="lead">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis risus sed vulputate odio ut enim blandit volutpat maecenas. Bibendum enim facilisis gravida neque convallis a cras. Amet risus nullam eget felis eget nunc lobortis mattis. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Elementum tempus egestas sed sed risus pretium quam vulputate. Facilisis leo vel fringilla est ullamcorper. Adipiscing enim eu turpis egestas. Nulla aliquet enim tortor at. Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Neque gravida in fermentum et sollicitudin. Nunc sed augue lacus viverra vitae congue. Tincidunt arcu non sodales neque sodales ut. Posuere urna nec tincidunt praesent semper feugiat nibh. Risus ultricies tristique nulla aliquet enim. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Non enim praesent elementum facilisis. Nunc aliquet bibendum enim facilisis gravida neque convallis a cras. Sollicitudin aliquam ultrices sagittis orci a scelerisque. Viverra suspendisse potenti nullam ac tortor.            
             </p>
-            <h2>Select Bay</h2>
-            <p class="bodytext">TODO: Select Bay</p>
-            <h2>Date/Time</h2>
-            <p class="bodytext">TODO: Show time table here</p>
-            <div class="centerTextAlign">
-                <button>Contact us</button>
-                <p>Copyright 2024, KGOLF</p>
+            <h2 class="text-center mt-2 mb-4">Select Bay</h2>
+            <p class="">
+                {% for job in jobs %}
+                    {% include 'jobitem.html' %}
+                {% endfor %}
+            </p>
+            <h2 class="text-center mt-2 mb-4">Date/Time</h2>
+            <p class="">TODO: Show time table here</p>
+            <div class="text-center">
+                <button class="btn btn-primary btn-lg">Contact us</button>
+                <p class="mt-4">Copyright 2024, KGOLF</p>
             </div>            
         </div>
     </body>
