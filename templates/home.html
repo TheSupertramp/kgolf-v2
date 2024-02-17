@@ -5,34 +5,76 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link href="/static/styles/list-groups.css" rel="stylesheet">
         <style>
             #logo_banner {
                 width: 50%;
                 height: 200px;        
                 object-fit:scale-down; 
+                margin-bottom: 16px;
             }
         </style>
     </head>
     <body>
+        {% include 'nav.html' %}        
+        <img class="" id="logo_banner" src="/static/book_a_session.webp" alt="" width="980" height="439" fetchpriority="high" style="width: 2560px; height: 439px; object-fit: cover;">      
         <div class="container">
-            <h1 class="text-center mt-2 mb-4">Welcome to KGOLF booking</h1>
-            <img class="img-fluid" id="logo_banner" src="/static/kgolf_logo.jpg">
-            <h2 class="text-center mt-2 mb-4">{{company_name}} Rules</h2>
-            <p class="lead">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis risus sed vulputate odio ut enim blandit volutpat maecenas. Bibendum enim facilisis gravida neque convallis a cras. Amet risus nullam eget felis eget nunc lobortis mattis. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Elementum tempus egestas sed sed risus pretium quam vulputate. Facilisis leo vel fringilla est ullamcorper. Adipiscing enim eu turpis egestas. Nulla aliquet enim tortor at. Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Neque gravida in fermentum et sollicitudin. Nunc sed augue lacus viverra vitae congue. Tincidunt arcu non sodales neque sodales ut. Posuere urna nec tincidunt praesent semper feugiat nibh. Risus ultricies tristique nulla aliquet enim. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Non enim praesent elementum facilisis. Nunc aliquet bibendum enim facilisis gravida neque convallis a cras. Sollicitudin aliquam ultrices sagittis orci a scelerisque. Viverra suspendisse potenti nullam ac tortor.            
-            </p>
+            <h1 class="text-center mt-2 mb-4">Book a session</h1>            
+            <!-- <h2 class="text-center mt-2 mb-4">{{company_name}} Rules</h2> -->
+            <div class="row">
+                <div class="d-none d-md-block col-md-6">
+                    <img src="/static/kgolf_analysis.webp" style="border-radius: 4px;">
+                </div>
+                <div class="d-none d-md-block col-md-6">
+                    <img src="/static/kgolf_courses.webp" style="border-radius: 4px;">
+                </div>                
+            </div>
+            <div class="row">
+                <div class="d-none d-md-block col-md-6">
+                    <div class="row">
+                        <div class="col-3">
+                            <p class="lead">
+                                <span class="fs-3 fw-bold">Accurate Analysis</span>
+                            </p>
+                        </div>
+                        <div class="col-9">
+                            <p class="lead">
+                                The movement and spin of a specially patterned ball are precisely measured using two high-speed cameras capable of capturing 2,000 frames per second. Additionally, the PhysX 6D physics engine simulates the actual behavior of the ball, accurately representing your ball's trajectory, including slices, hooks, fades, draws, and running approaches.
+                            </p>  
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-md-block col-md-6">
+                    <div class="row">
+                        <div class="col-3">
+                            <p class="lead">
+                                <span class="fs-3 fw-bold">Play 18holes at over 100+ courses</span>
+                            </p>
+                        </div>
+                        <div class="col-9">
+                            <p class="lead">
+                                Get the chance to play on virtual renditions of leading golf courses from around the world, recreated with precision. From the iconic Pebble Beach in the U.S. to Singapore's esteemed Sentosa Golf Club, these simulations use real-world designs and vivid graphics to provide an immersive experience akin to playing on the actual greens.
+                            </p>
+                        </div>
+                    </div>                    
+                </div>                
+            </div>
+
             <h2 class="text-center mt-2 mb-4">Select Bay</h2>
             <p class="">
-                {% for job in jobs %}
+                <!-- {% for job in jobs %}
                     {% include 'jobitem.html' %}
-                {% endfor %}
+                {% endfor %} -->
+                {% include 'bays.html' %}
             </p>
             <h2 class="text-center mt-2 mb-4">Select Date/Time</h2>
             <p class="">TODO: Show time table here</p>
-            <div class="text-center">
-                <button class="btn btn-primary btn-lg">Contact us</button>
-                <p class="mt-4">Copyright 2024, KGOLF</p>
+            <h2 class="text-center mt-2 mb-4">Contact us</h2>
+            <div class="text-center">                
+                <a href="mailto:admin@kgolf.co.nz?subject=Enquiry" type="button" class="btn btn-success btn-lg">Send Email</a>
+                <a href="tel:094409396" type="button" class="btn btn-success btn-lg">Call 09 440 9396</a>
             </div>            
         </div>
+        {% include 'footer.html' %}
     </body>
 </html>
