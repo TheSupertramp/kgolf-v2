@@ -17,16 +17,16 @@
     </head>
     <body>
         {% include 'nav.html' %}        
-        <img class="" id="logo_banner" src="/static/book_a_session.webp" alt="" width="980" height="439" fetchpriority="high" style="width: 2560px; height: 439px; object-fit: cover;">      
+        <img class="" id="logo_banner" src="/static/img/book_a_session.webp" alt="" width="980" height="439" fetchpriority="high" style="width: 2560px; height: 439px; object-fit: cover;">      
         <div class="container">
             <h1 class="text-center mt-2 mb-4">Book a session</h1>            
             <!-- <h2 class="text-center mt-2 mb-4">{{company_name}} Rules</h2> -->
             <div class="row">
                 <div class="d-none d-md-block col-md-6">
-                    <img src="/static/kgolf_analysis.webp" style="border-radius: 4px;">
+                    <img src="/static/img/kgolf_analysis.webp" style="border-radius: 4px;">
                 </div>
                 <div class="d-none d-md-block col-md-6">
-                    <img src="/static/kgolf_courses.webp" style="border-radius: 4px;">
+                    <img src="/static/img/kgolf_courses.webp" style="border-radius: 4px;">
                 </div>                
             </div>
             <div class="row">
@@ -60,6 +60,10 @@
                 </div>                
             </div>
 
+            <h2 class="text-center mt-2 mb-4">Date</h2>
+            <p class="">
+                {% include 'calendar.html' %}
+            </p>
             <h2 class="text-center mt-2 mb-4">Select Bay</h2>
             <p class="">
                 <!-- {% for job in jobs %}
@@ -67,8 +71,10 @@
                 {% endfor %} -->
                 {% include 'bays.html' %}
             </p>
-            <h2 class="text-center mt-2 mb-4">Select Date/Time</h2>
-            <p class="">TODO: Show time table here</p>
+            <h2 class="text-center mt-2 mb-4">Time</h2>
+            <p class="">
+                {% include 'timesheet.html' %}
+            </p>
             <h2 class="text-center mt-2 mb-4">Contact us</h2>
             <div class="text-center">                
                 <a href="mailto:admin@kgolf.co.nz?subject=Enquiry" type="button" class="btn btn-success btn-lg">Send Email</a>

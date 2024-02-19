@@ -29,10 +29,42 @@ JOBS = [
     }    
 ]
 
+def get_hours(start_hour=9, end_hour=23, use_half_hour=True):
+    hours = []
+    for i in range(start_hour, end_hour + 1):
+        hours.append(f'{str(i).zfill(2)}:00')
+        if use_half_hour and i < end_hour:
+            hours.append(f'{str(i).zfill(2)}:30')
+    return hours
+
+def get_bays():
+    return [
+        {'id': 1, 'name': 'Bay 1'},
+        {'id': 2, 'name': 'Bay 2'},
+        {'id': 3, 'name': 'Bay 3'},
+        {'id': 4, 'name': 'Bay 4'}
+    ]
+
+def get_days():
+    # Implement your logic for getting days here
+    pass
+
+def get_events():
+    # Implement your logic for getting events here
+    pass
+
+
+
+
 @app.route("/")
-def hello_world():
+def kgolf_booking():
+    hours = get_hours()
+    rooms = get_bays()
+    days = get_days()
+    events = get_events()    
     return render_template('home.html', 
                            jobs=JOBS,
+                           hours=hours, rooms=rooms, days=days, events=events,
                            company_name='KGOLF')
 
 

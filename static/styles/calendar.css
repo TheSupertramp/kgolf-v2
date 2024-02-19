@@ -1,0 +1,217 @@
+/**
+ * Eric Meyer's Reset CSS v2.0+ (https://meyerweb.com/eric/tools/css/reset/)
+ * http://cssreset.com
+ */
+ 
+
+ /* HTML5 display-role reset for older browsers */
+ #date-calendar article, aside, details, figcaption, figure,
+ footer, header, hgroup, menu, nav, section {
+     display: block;
+ }
+ #date-calendar body {
+     line-height: 1.5;
+ }
+ #date-calendar ol, ul {
+     list-style: none;
+ }
+ #date-calendar blockquote, q {
+     quotes: none;
+ }
+ #date-calendar blockquote:before, blockquote:after,
+ q:before, q:after {
+     content: '';
+     content: none;
+ }
+ #date-calendar table {
+     border-spacing: 2px;
+ }
+ #date-calendar .clearfix:before,
+ .clearfix:after {
+     content: " "; /* 1 */
+     display: table; /* 2 */
+ }
+ 
+ #date-calendar .clearfix:after {
+     clear: both;
+ }
+ /**
+  * For IE 6/7 only
+  * Include this rule to trigger hasLayout and contain floats.
+  */
+#date-calendar .clearfix {
+     *zoom: 1;
+ }
+ #date-calendar a, a:hover {
+     text-decoration: none;
+ }
+ #date-calendar .img-responsive {
+     max-width: 100%;
+     height: auto;
+ }
+ 
+ #date-calendar body{
+     font-family: Arial, Helvetica, sans-serif;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+ }
+ 
+ .elegant-calencar {
+     width: 26em;
+     /* height: 31em; */
+     border: 1px solid #c9c9c9;
+     -webkit-box-shadow: 0 0 5px #c9c9c9;
+     box-shadow: 0 0 5px #c9c9c9;
+     text-align: center;
+     margin: 4em auto;
+     position: relative;
+ }
+ 
+ #date-calendar #header {
+     font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+     height: 14em;
+     background-color: #2a3246;
+     margin-bottom: 1em;
+ }
+ 
+ #date-calendar .pre-button, .next-button {
+     margin-top: 2em;
+     font-size: 3em;
+     -webkit-transition: -webkit-transform 0.5s;
+     transition: transform 0.5s;
+     cursor: pointer;
+     width: 1em;
+     height: 1em;
+     line-height: 1em;
+     color: #e66b6b;
+     border-radius: 50%;
+ }
+ 
+ #date-calendar .pre-button:hover, .next-button:hover {
+     -webkit-transform: rotate(360deg);
+     -ms-transform: rotate(360deg);
+     transform: rotate(360deg);
+ }
+ 
+ #date-calendar .pre-button:active,.next-button:active{
+     -webkit-transform: scale(0.7);
+     -ms-transform: scale(0.7);
+     transform: scale(0.7);
+ }
+ 
+ #date-calendar .pre-button {
+     float: left;
+     margin-left: 0.5em;
+ }
+ 
+ #date-calendar .next-button {
+     float: right;
+     margin-right: 0.5em;
+ }
+ 
+ #date-calendar .head-info {
+     float: left;
+     width: 16em;
+ }
+ 
+ #date-calendar .head-day {
+     margin-top: 30px;
+     font-size: 8em;
+     line-height: 1;
+     color: #fff;
+ }
+ 
+ #date-calendar .head-month {
+     margin-top: 20px;
+     font-size: 2em;
+     line-height: 1;
+     color: #fff;
+ }
+ 
+ #date-calendar #calendar {
+     width: 90%;
+     margin: 0 auto;
+ }
+ 
+ #date-calendar #calendar tr {
+     height: 2em;
+     line-height: 2em;
+ }
+ 
+ #date-calendar thead tr {
+     color: #e66b6b;
+     font-weight: 700;
+     text-transform: uppercase;
+ }
+ 
+ #date-calendar tbody tr {
+     color: #252a25;
+ }
+ 
+ #date-calendar tbody td{
+     width: 14%;
+     border-radius: 50%;
+     cursor: pointer;
+     -webkit-transition:all 0.2s ease-in;
+     transition:all 0.2s ease-in;
+ }
+ 
+ #date-calendar tbody td:hover, .selected {
+     color: #fff;
+     background-color: #2a3246;
+     border: none;
+ }
+ 
+ #date-calendar tbody td:active {
+     -webkit-transform: scale(0.7);
+     -ms-transform: scale(0.7);
+     transform: scale(0.7);
+ }
+ 
+ #date-calendar #today {
+     background-color: #e66b6b;
+     color: #fff;
+     font-family: serif;
+     border-radius: 50%;
+ }
+ 
+ #date-calendar #disabled {
+     cursor: default;
+     background: #fff;
+ }
+ 
+ #date-calendar #disabled:hover {
+     background: #fff;
+     color: #c9c9c9;
+ }
+ 
+ #date-calendar #reset {
+     display: block;
+     position: absolute;
+     right: 0.5em;
+     top: 0.5em;
+     z-index: 999;
+     color: #fff;
+     font-family: serif;
+     cursor: pointer;
+     padding: 0 0.5em;
+     height: 1.5em;
+     border: 0.1em solid #fff;
+     border-radius: 4px;
+     -webkit-transition: all 0.3s ease;
+     transition: all 0.3s ease;
+ }
+ 
+ #date-calendar #reset:hover {
+     color: #e66b6b;
+     border-color: #e66b6b;
+ }
+ 
+ #date-calendar #reset:active{
+     -webkit-transform: scale(0.8);
+     -ms-transform: scale(0.8);
+     transform: scale(0.8);     
+ }
+ 
