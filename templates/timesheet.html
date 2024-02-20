@@ -1,53 +1,62 @@
 <link rel="stylesheet" href="../static/styles/timesheet.css">
 
-<div id="booking-timesheet" class="booking-timesheet border row">
-  <div class="booking-timeline col">
-    <div class="spacer"></div>
-    <div class="time-marker">9 AM</div>
-    <div class="time-marker">10 AM</div>
-    <div class="time-marker">11 AM</div>
-    <div class="time-marker">12 PM</div>
-    <div class="time-marker">1 PM</div>
-    <div class="time-marker">2 PM</div>
-    <div class="time-marker">3 PM</div>
-    <div class="time-marker">4 PM</div>
-    <div class="time-marker">5 PM</div>
-    <div class="time-marker">6 PM</div>
-    <div class="time-marker">7 PM</div>
-    <div class="time-marker">8 PM</div>
-    <div class="time-marker">9 PM</div>
-    <div class="time-marker">10 PM</div>
-    <!-- <div class="time-marker">11 PM</div> -->
-  </div>
-  <div class="bays col-5">
-    <div class="bay">
-      <div class="bay-label">
-        <p class="bay-label-text mb-2">Bay 1</p>        
-      </div>
-      <div class="events">
-        <div class="event start-14 end-17 virtual-game">
-          <p class="title">Virtual Game</p>
-          <p class="time">2 PM - 5 PM</p>
+<div class="container d-flex align-items-center justify-content-center">
+  <div id="booking-timesheet" class="booking-timesheet row">
+    <div class="booking-timeline col">
+      <div class="spacer"></div>
+      <div class="time-marker">9 AM</div>
+      <div class="time-marker">10 AM</div>
+      <div class="time-marker">11 AM</div>
+      <div class="time-marker">12 PM</div>
+      <div class="time-marker">1 PM</div>
+      <div class="time-marker">2 PM</div>
+      <div class="time-marker">3 PM</div>
+      <div class="time-marker">4 PM</div>
+      <div class="time-marker">5 PM</div>
+      <div class="time-marker">6 PM</div>
+      <div class="time-marker">7 PM</div>
+      <div class="time-marker">8 PM</div>
+      <div class="time-marker">9 PM</div>
+      <div class="time-marker">10 PM</div>
+      <div class="time-marker">11 PM</div>
+    </div>
+    <div class="bays col">
+      <div class="bay text-center">
+        <div class="bay-label text-center d-flex align-items-center justify-content-center">
+          <p class="bay-label-text mb-2">Bay 1</p>        
         </div>
         <div class="events">
-            <div class="event start-19 end-20 driving-range">
-              <p class="title">Driving Range</p>
-              <p class="time">7 PM - 8 PM</p>
-            </div>        
+          <div class="row_blank row_firstrow"></div>
+          <div class="row_blank"></div>
+          <div class="row_blank"></div>
+          <div class="row_blank"></div>
+          <div class="row_blank"></div>            
+          <div class="event start-14 end-17 virtual-game">
+            <p class="title">Virtual Game</p>
+            <p class="time">2 PM - 5 PM</p>
+          </div>
+          <div class="row_blank row_afterevent"></div>
+          <div class="row_blank"></div>  
+          <div class="event start-19 end-20 driving-range">
+            <p class="title">Driving Range</p>
+            <p class="time">7 PM - 8 PM</p>
+          </div>
+          <div class="row_blank row_afterevent"></div>
+          <div class="row_blank"></div>          
+          <div class="row_blank"></div>        
+        </div>
+      
+        <!-- <div class="bay">
+        <div class="bay-label">
+          <p class="bay-label-text">Bay 1</p>        
+        </div>
+        <div class="events">
+          <div class="event start-2 end-5 virtual-game">
+            <p class="title">Virtual Game</p>
+            <p class="time">2 PM - 5 PM</p>
+          </div>
+        </div> -->
       </div>
     </div>
-    
-    <!-- <div class="bay">
-      <div class="bay-label">
-        <p class="bay-label-text">Bay 1</p>        
-      </div>
-      <div class="events">
-        <div class="event start-2 end-5 virtual-game">
-          <p class="title">Virtual Game</p>
-          <p class="time">2 PM - 5 PM</p>
-        </div>
-      </div>
-    </div> -->
-
   </div>
 </div>

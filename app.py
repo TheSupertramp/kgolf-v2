@@ -53,14 +53,14 @@ def get_events():
     # Implement your logic for getting events here
     pass
 
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 
-@app.template_filter('add_time')
-def add_time(time, minutes):
-    time_obj = datetime.strptime(time, '%H:%M')
-    new_time_obj = time_obj + timedelta(minutes=minutes)
-    new_time = new_time_obj.strftime('%H:%M')
-    return new_time
+# @app.template_filter('add_time')
+# def add_time(time, minutes):
+#     time_obj = datetime.strptime(time, '%H:%M')
+#     new_time_obj = time_obj + timedelta(minutes=minutes)
+#     new_time = new_time_obj.strftime('%H:%M')
+#     return new_time
 
 
 
@@ -72,7 +72,7 @@ def kgolf_booking():
     events = get_events()    
     return render_template('home.html', 
                            jobs=JOBS,
-                           rooms=rooms, days=days, events=events,
+                           rooms=rooms, hours=hours, days=days, events=events,
                            company_name='KGOLF')
 
 
