@@ -1,19 +1,25 @@
 :root {
     --numDays: 1;
     --numHours: 15;
-    --timesheetBackColorHourCount: 14;
-    --timeHeight: 60px;
-    --timeHeightTest: 61px;
+    --timesheetBackColorHourCount: 28;
+    --timeHeight: 60px;    
+    --eventHeight: 30px;
     --calBgColor: #fff1f8;
     --eventBorderColor: #000000;
     --eventColor1: #ffd6d1;
     --eventColor2: #fafaa3;
     --eventColor3: #e2f8ff;
     --eventColor4: #d1ffe6;
+    --eventColor5: #df7d21;
+    --eventColor6: #bdbdbd;
   }
  
-.row_blank {  
+.row_blank_fullhour {  
   border-bottom: 1px dotted black;    
+}
+
+.row_blank_halfhour {  
+  border-bottom: 1px dotted gray;    
 }
 
 .row_afterevent, .row_firstrow {
@@ -35,6 +41,7 @@
     display: grid;
     grid-template-rows: repeat(var(--numHours), var(--timeHeight));
     min-width: 5rem;
+    margin-top: -14px;
   }
   
   .bays {
@@ -47,7 +54,7 @@
   /* this is the pink backcolor */
   .events { 
     display: grid;
-    grid-template-rows: repeat(var(--timesheetBackColorHourCount), var(--timeHeightTest));
+    grid-template-rows: repeat(var(--timesheetBackColorHourCount), var(--eventHeight));
     border-radius: 5px;
     background: var(--calBgColor);                
   }
@@ -65,112 +72,180 @@
     grid-row-start: 1;
   }
 
-  .start-10 {
+  .start-9-30 {
     grid-row-start: 2;
   }
 
-  .start-11 {
+  .start-10 {
     grid-row-start: 3;
   }
-  
-  .start-12 {
+
+  .start-10-30 {
     grid-row-start: 4;
   }
-  
-  .start-13 {
+
+  .start-11 {
     grid-row-start: 5;
   }
   
-  .start-14 {
+  .start-11-30 {
     grid-row-start: 6;
   }
-  
-  .start-15 {
+
+  .start-12 {
     grid-row-start: 7;
   }
 
-  .start-16 {
+  .start-12-30 {
     grid-row-start: 8;
   }
-
-  .start-17 {
+  
+  .start-13 {
     grid-row-start: 9;
   }
 
-  .start-18 {
+  .start-13-30 {
     grid-row-start: 10;
   }
-
-  .start-19 {
+  
+  .start-14 {
     grid-row-start: 11;
   }
-
-  .start-20 {
+  .start-14-30 {
     grid-row-start: 12;
   }
-
-  .start-21 {
+  .start-15 {
     grid-row-start: 13;
   }
-
-  .start-22 {
+  .start-15-30 {
     grid-row-start: 14;
   }
-  
-  .end-10 {
+  .start-16 {
+    grid-row-start: 15;
+  }
+  .start-16-30 {
+    grid-row-start: 16;
+  }
+  .start-17 {
+    grid-row-start: 17;
+  }
+  .start-17-30 {
+    grid-row-start: 18;
+  }
+  .start-18 {
+    grid-row-start: 19;
+  }
+  .start-18-30 {
+    grid-row-start: 20;
+  }
+  .start-19 {
+    grid-row-start: 21;
+  }
+  .start-19-30 {
+    grid-row-start: 22;
+  }
+  .start-20 {
+    grid-row-start: 23;
+  }
+  .start-20-30 {
+    grid-row-start: 24;
+  }
+  .start-21 {
+    grid-row-start: 25;
+  }
+  .start-21-30 {
+    grid-row-start: 26;
+  }
+  .start-22 {
+    grid-row-start: 27;
+  }
+  .start-22-30 {
+    grid-row-start: 28;
+  }
+
+  .end-9-30 {
     grid-row-end: 2;
   }
-  
-  .end-11 {
+  .end-10 {
     grid-row-end: 3;
   }
-  
-  .end-12 {
+  .end-10-30 {
     grid-row-end: 4;
   }
-  
-  .end-13 {
+  .end-11 {
     grid-row-end: 5;
   }
-  
-  .end-14 {
+  .end-11-30 {
     grid-row-end: 6;
   }
-  
-  .end-15 {
+  .end-12 {
     grid-row-end: 7;
   }
-  
-  .end-16 {
+  .end-12-30 {
     grid-row-end: 8;
   }
-  
-  .end-17 {
+  .end-13 {
     grid-row-end: 9;
   }
-
-  .end-18 {
+  .end-13-30 {
     grid-row-end: 10;
   }
-
-  .end-19 {
+  .end-14 {
     grid-row-end: 11;
   }
-
-  .end-20 {
+  .end-14-30 {
     grid-row-end: 12;
   }
-  
-  .end-21 {
+  .end-15 {
     grid-row-end: 13;
   }
-
-  .end-22 {
+  .end-15-30 {
     grid-row-end: 14;
   }
-
-  .end-23 {
+  .end-16 {
     grid-row-end: 15;
+  }
+  .end-16-30 {
+    grid-row-end: 16;
+  }
+  .end-17 {
+    grid-row-end: 17;
+  }
+  .end-17-30 {
+    grid-row-end: 18;
+  }
+  .end-18 {
+    grid-row-end: 19;
+  }
+  .end-18-30 {
+    grid-row-end: 20;
+  }
+  .end-19 {
+    grid-row-end: 21;
+  }
+  .end-19-30 {
+    grid-row-end: 22;
+  }
+  .end-20 {
+    grid-row-end: 23;
+  }
+  .end-20-30 {
+    grid-row-end: 24;
+  }
+  .end-21 {
+    grid-row-end: 25;
+  }
+  .end-21-30 {
+    grid-row-end: 26;
+  }
+  .end-22 {
+    grid-row-end: 27;
+  }
+  .end-22-30 {
+    grid-row-end: 28;
+  }
+  .end-23 {
+    grid-row-end: 29;
   }
 
   .title {
@@ -183,22 +258,32 @@
     height: 60px
   }
   
-  
-  .corp-fi {
-    background: var(--eventColor1);
-  }
-  
+
+
   .driving-range {
     background: var(--eventColor2);
   }
-  
-  .writing {
-    background: var(--eventColor3);
-  }
-  
+
   .virtual-game {
     background: var(--eventColor4);
   }
+
+  .corporate-event {
+    background: var(--eventColor1);
+  }
+  
+  .somethingelse {
+    background: var(--eventColor3);
+  }
+  
+  .competition {
+    background: var(--eventColor5);
+  }
+
+  .timeblocked {
+    background: var(--eventColor6);
+  }
+  
   
   .bay-label {
     display: flex;

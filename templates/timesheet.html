@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="../static/styles/timesheet.css">
 
-<div class="container d-flex align-items-center justify-content-center">
+<div class="container d-flex align-items-center justify-content-center m-auto">
   <div id="booking-timesheet" class="booking-timesheet row">
-    <div class="booking-timeline col">
+    <div class="booking-timeline col justify-content-center">
       <div class="spacer"></div>
       <div class="time-marker">9 AM</div>
       <div class="time-marker">10 AM</div>
@@ -21,29 +21,43 @@
       <div class="time-marker">11 PM</div>
     </div>
     <div class="bays col">
-      <div class="bay text-center">
+      <div class="bay text-center me-2">
         <div class="bay-label text-center d-flex align-items-center justify-content-center">
-          <p class="bay-label-text mb-2">Bay 1</p>        
+          <p class="bay-label-text mb-auto">Bay 1</p>        
         </div>
         <div class="events">
-          <div class="row_blank row_firstrow"></div>
-          <div class="row_blank"></div>
-          <div class="row_blank"></div>
-          <div class="row_blank"></div>
-          <div class="row_blank"></div>            
+          <div class="row_blank_halfhour row_firstrow"></div>
+          <!-- <div class="row_blank_fullhour"></div> -->
+          <div class="event start-9-30 end-11 competition">
+            <p class="title">Competition</p>
+            <p class="time">9:30 AM - 11 AM</p>
+          </div>
+          <!-- <div class="row_blank_halfhour"></div> -->
+          <!-- <div class="row_blank_fullhour"></div> -->
+          <div class="row_blank_halfhour"></div>            
+          <div class="row_blank_fullhour"></div>
+          <div class="row_blank_halfhour"></div>
+          <div class="row_blank_fullhour"></div>
+          <div class="row_blank_halfhour"></div>                        
+          <div class="row_blank_fullhour"></div>    
           <div class="event start-14 end-17 virtual-game">
             <p class="title">Virtual Game</p>
             <p class="time">2 PM - 5 PM</p>
           </div>
-          <div class="row_blank row_afterevent"></div>
-          <div class="row_blank"></div>  
+          <div class="row_blank_halfhour row_afterevent"></div>
+          <div class="row_blank_fullhour"></div>  
+          <div class="row_blank_halfhour"></div>  
+          <div class="row_blank_fullhour"></div>  
           <div class="event start-19 end-20 driving-range">
             <p class="title">Driving Range</p>
             <p class="time">7 PM - 8 PM</p>
           </div>
-          <div class="row_blank row_afterevent"></div>
-          <div class="row_blank"></div>          
-          <div class="row_blank"></div>        
+          <div class="row_blank_halfhour row_afterevent"></div>
+          <div class="row_blank_fullhour"></div>          
+          <div class="row_blank_halfhour"></div>        
+          <div class="row_blank_fullhour"></div>        
+          <div class="row_blank_halfhour"></div>        
+          <div class="row_blank_fullhour"></div>                
         </div>
       
         <!-- <div class="bay">
