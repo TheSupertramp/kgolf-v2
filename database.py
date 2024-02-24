@@ -1,9 +1,6 @@
 from sqlalchemy import create_engine, text
 import os
-#db_connection_string = "mysql+pymysql://4rimpv3zph4n9qaa5d89:pscale_pw_4hBLl85dYiAE2Ddth4Nxu5mKlmtsIM9WALzhkksYu68@aws-ap-southeast-2.connect.psdb.cloud/kgolf?charset=utf8mb4"
-#TODO: make this connection string a envrionment variable on hosting side.
-#then do this instead
-# import os
+
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
 engine = create_engine(
