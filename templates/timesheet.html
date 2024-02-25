@@ -4,21 +4,11 @@
   <div id="booking-timesheet" class="booking-timesheet row">
     <div class="booking-timeline col justify-content-center">
       <div class="spacer"></div>
-      <div class="time-marker">9 AM</div>
-      <div class="time-marker">10 AM</div>
-      <div class="time-marker">11 AM</div>
-      <div class="time-marker">12 PM</div>
-      <div class="time-marker">1 PM</div>
-      <div class="time-marker">2 PM</div>
-      <div class="time-marker">3 PM</div>
-      <div class="time-marker">4 PM</div>
-      <div class="time-marker">5 PM</div>
-      <div class="time-marker">6 PM</div>
-      <div class="time-marker">7 PM</div>
-      <div class="time-marker">8 PM</div>
-      <div class="time-marker">9 PM</div>
-      <div class="time-marker">10 PM</div>
-      <div class="time-marker">11 PM</div>
+      {% for i in range(timeslots|length) %} 
+        {% if timeslots[i]['MinuteValue'] == 0 %}
+      <div class="time-marker">{{timeslots[i]['HourNameDisplay']}}</div>
+        {% endif %}
+      {% endfor %}
     </div>
     <div class="bays col">
       <div class="bay text-center me-2">
@@ -26,38 +16,40 @@
           <p class="bay-label-text mb-auto">Bay 1</p>        
         </div>
         <div class="events">
-          <div class="row_blank_halfhour row_firstrow"></div>
-          <!-- <div class="row_blank_fullhour"></div> -->
-          <div class="event start-9-30 end-11 competition">
-            <p class="title">Competition - "Close to the Hole"</p>
-            <p class="time">9:30 AM - 11 AM</p>
-          </div>
-          <!-- <div class="row_blank_halfhour"></div> -->
-          <!-- <div class="row_blank_fullhour"></div> -->
-          <div class="row_blank_halfhour row_afterevent"></div>            
-          <div class="row_blank_fullhour"></div>
-          <div class="row_blank_halfhour"></div>
-          <div class="row_blank_fullhour"></div>
-          <div class="row_blank_halfhour"></div>                        
-          <div class="row_blank_fullhour"></div>    
-          <div class="event start-14 end-17 virtual-game">
-            <p class="title">Virtual Game</p>
-            <p class="time">2 PM - 5 PM</p>
-          </div>
-          <div class="row_blank_halfhour row_afterevent"></div>
-          <div class="row_blank_fullhour"></div>  
-          <div class="row_blank_halfhour"></div>  
-          <div class="row_blank_fullhour"></div>  
-          <div class="event start-19 end-20 driving-range">
-            <p class="title">Driving Range</p>
-            <p class="time">7 PM - 8 PM</p>
-          </div>
-          <div class="row_blank_halfhour row_afterevent"></div>
-          <div class="row_blank_fullhour"></div>          
-          <div class="row_blank_halfhour"></div>        
-          <div class="row_blank_fullhour"></div>        
-          <div class="row_blank_halfhour"></div>        
-          <div class="row_blank_fullhour"></div>                
+          {% set bookinglist = load_bookings(today_date, 1) %}
+          {% set ns = namespace(currentBookingID=-1) %}
+          {% set ns = namespace(currentBookingStartTimeslotHour=-1) %}
+          {% set ns = namespace(currentBookingStartTimeslotMinute=-1) %}
+          {% set ns = namespace(currentBookingStartTimeslotHourNameDisplay="") %}
+
+          {% for i in range(bookinglist|length -1) %}
+            {% if bookinglist[i]['BookingID'] is none %} <!--When there is no booking for the slot-->
+              {% if i==0 %} <!--very first timeslot row-->
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="row_blank_halfhour row_firstrow"></div>
+              {% else %}                
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="{% if bookinglist[i]['MinuteValue']==0 %}row_blank_halfhour{% else %}row_blank_fullhour{% endif %}"></div>
+              {% endif %}
+              <!--reset namespace variables-->
+              {% set ns.currentBookingID = -1 %}
+              {% set ns.currentBookingStartTimeslotHour = -1 %}         
+              {% set ns.currentBookingStartTimeslotMinute = -1 %}
+              {% set ns.currentBookingStartTimeslotHourNameDisplay = "" %}              
+            {% else %} <!--When there is existing booking for the slot-->
+              {% set ns.currentBookingID = bookinglist[i]['BookingID'] %}
+              {% if bookinglist[i]['BookingTimePoint'] == "Start" %} <!--Get booking start timeslot info and save-->
+                {% set ns.currentBookingStartTimeslotHour = bookinglist[i]['HourValue'] %}
+                {% set ns.currentBookingStartTimeslotMinute = bookinglist[i]['MinuteValue'] %}
+                {% set ns.currentBookingStartTimeslotHourNameDisplay = bookinglist[i]['HourNameDisplay'] %}                
+              {% endif %}
+              {% if bookinglist[i]['BookingTimePoint'] == "End" %} <!--If it is booking end timeslot then writes the HTML-->
+                <div id="timeslot{{ns.currentBookingStartTimeslotHour}}{{ '%02d' % ns.currentBookingStartTimeslotMinute}}" class="event start-{{ns.currentBookingStartTimeslotHour}}{% if ns.currentBookingStartTimeslotMinute > 0 %}-{{ns.currentBookingStartTimeslotMinute}}{% endif %} end-{{bookinglist[i]['HourValue']}}{% if bookinglist[i]['MinuteValue'] > 0 %}-{{bookinglist[i]['MinuteValue']}}{% endif %} {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}">
+                  <p class="title">{{bookinglist[i]['BookingTypeName']}}</p>
+                  <p class="time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</p>
+                </div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="row_blank_halfhour row_afterevent"></div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}          
         </div>
       
         <!-- <div class="bay">
@@ -74,3 +66,6 @@
     </div>
   </div>
 </div>
+{% autoescape false %}
+<!-- {{ load_bookings(today_date, 1) }} -->
+{% endautoescape %}
