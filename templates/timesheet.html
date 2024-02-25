@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../static/styles/timesheet.css">
 
-<div class="container d-flex align-items-center justify-content-center m-auto">
-  <div id="booking-timesheet" class="booking-timesheet row">
+<div class="container d-flex align-items-center justify-content-center">
+  <div id="booking-timesheet" class="booking-timesheet row border border-light-subtle rounded pt-3 pb-4">
     <div class="booking-timeline col justify-content-center">
       <div class="spacer"></div>
       {% for i in range(timeslots|length) %} 
@@ -15,7 +15,7 @@
         <div class="bay-label text-center d-flex align-items-center justify-content-center">
           <p class="bay-label-text mb-auto">Bay 1</p>        
         </div>
-        <div class="events">
+        <div class="timeslots border border-success rounded">
           {% set bookinglist = load_bookings(today_date, 1) %}
           {% set ns = namespace(currentBookingID=-1) %}
           {% set ns = namespace(currentBookingStartTimeslotHour=-1) %}
@@ -25,9 +25,9 @@
           {% for i in range(bookinglist|length -1) %}
             {% if bookinglist[i]['BookingID'] is none %} <!--When there is no booking for the slot-->
               {% if i==0 %} <!--very first timeslot row-->
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="row_blank_halfhour row_firstrow"></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% else %}                
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="{% if bookinglist[i]['MinuteValue']==0 %}row_blank_halfhour{% else %}row_blank_fullhour{% endif %}"></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% endif %}
               <!--reset namespace variables-->
               {% set ns.currentBookingID = -1 %}
@@ -42,11 +42,28 @@
                 {% set ns.currentBookingStartTimeslotHourNameDisplay = bookinglist[i]['HourNameDisplay'] %}                
               {% endif %}
               {% if bookinglist[i]['BookingTimePoint'] == "End" %} <!--If it is booking end timeslot then writes the HTML-->
-                <div id="timeslot{{ns.currentBookingStartTimeslotHour}}{{ '%02d' % ns.currentBookingStartTimeslotMinute}}" class="event start-{{ns.currentBookingStartTimeslotHour}}{% if ns.currentBookingStartTimeslotMinute > 0 %}-{{ns.currentBookingStartTimeslotMinute}}{% endif %} end-{{bookinglist[i]['HourValue']}}{% if bookinglist[i]['MinuteValue'] > 0 %}-{{bookinglist[i]['MinuteValue']}}{% endif %} {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}">
-                  <p class="title">{{bookinglist[i]['BookingTypeName']}}</p>
-                  <p class="time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</p>
+                <div id="timeslot{{ns.currentBookingStartTimeslotHour}}{{ '%02d' % ns.currentBookingStartTimeslotMinute}}" class="hover:shadow-md event start-{{ns.currentBookingStartTimeslotHour}}{% if ns.currentBookingStartTimeslotMinute > 0 %}-{{ns.currentBookingStartTimeslotMinute}}{% endif %} end-{{bookinglist[i]['HourValue']}}{% if bookinglist[i]['MinuteValue'] > 0 %}-{{bookinglist[i]['MinuteValue']}}{% endif %} {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}">
+                  {% if ((bookinglist[i]['HourValue'] * 60) + bookinglist[i]['MinuteValue']) - ((ns.currentBookingStartTimeslotHour * 60) + ns.currentBookingStartTimeslotMinute) >= 60 %}
+                    {% set marginBottomIndex = 1 %}
+                  {% else %}
+                    {% set marginBottomIndex = 0 %}
+                  {% endif %}
+                  <div class="row event-inner mt-n{{(marginBottomIndex + 1) % 2}}">
+                    <div class="col col-1">
+                      <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
+                    </div>
+                    <div class="col col-10">
+                      <div class="title mb-{{marginBottomIndex}}">{{bookinglist[i]['BookingTypeName']}}</div>
+                      <div class="time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</div>
+                    </div>
+                    <div class="col col-1">
+                      <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
+                    </div>                    
+                  </div>                  
                 </div>
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="row_blank_halfhour row_afterevent"></div>
+                {% if bookinglist[i]['ID'] != bookinglist[i+1]['ID'] %}
+                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                {% endif %}
               {% endif %}
             {% endif %}
           {% endfor %}          

@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, text
 import os
 import datetime
 
+
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
 engine = create_engine(
@@ -74,7 +75,8 @@ def get_bookings(bookingDate, bayID):
             "         AND BTD.IsActive = 1"\
             " ) Bookings ON 1=1"\
             " ORDER BY"\
-            " 	TS.ID ASC"    
+            " 	TS.ID ASC,"\
+            "   CASE WHEN BookingTimePoint = 'End' THEN 0 ELSE 1 END ASC"
     with engine.connect() as conn:
         result = conn.execute(text(query))
         bookings = [bk._asdict() for bk in result.all()]
