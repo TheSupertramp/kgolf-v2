@@ -16,7 +16,7 @@
           <p class="bay-label-text mb-auto">Bay 1</p>        
         </div>
         <div class="timeslots border border-success rounded">
-          {% set bookinglist = load_bookings(today_date, 1) %}
+          
           {% set ns = namespace(currentBookingID=-1) %}
           {% set ns = namespace(currentBookingStartTimeslotHour=-1) %}
           {% set ns = namespace(currentBookingStartTimeslotMinute=-1) %}
@@ -68,7 +68,6 @@
             {% endif %}
           {% endfor %}          
         </div>
-      
         <!-- <div class="bay">
         <div class="bay-label">
           <p class="bay-label-text">Bay 1</p>        

@@ -47,16 +47,33 @@ document.addEventListener('DOMContentLoaded', function(){
         for(var k = 0; k <42; k++) {
             days[k].innerHTML = '';
             days[k].id = '';
-            days[k].className = '';
+            days[k].className = ''; 
+            days[k].outerHTML = '<td id="" class=""></td>';
         }
-
+        
         for(var i  = 1; i <= nDays ; i++) {
-            days[n].innerHTML = i; 
+            days[n].innerHTML = i;
+            
+            var iDrawingDate = new Date(year, month, i);
+            var todayDate = new Date(today.toDateString());
+            
+            if(iDrawingDate >= todayDate) {
+                //lets add HTMX stuff                
+                var fullDateStr = year + "-" + (month+1).toString().padStart(2, '0') + "-" + i.toString().padStart(2, '0');            
+                days[n].outerHTML = days[n].outerHTML.replace('class=""', 'class="" hx-get="/timesheet/' + fullDateStr + '/1" hx-target="#timesheet" hx-indicator=".htmx-indicator"');
+                days[n].setAttribute("id", "d" + (month+1).toString() + i.toString());
+                htmx.process(days[n]);       
+            }
             n++;
         }
         
         for(var j = 0; j < 42; j++) {
             var drawingDate = new Date(year, month, (j-startDay+1));
+            
+            // const attr = document.createAttribute("hx-get");
+            // attr.value = "/timesheet/" + drawingDate.toISOString().split('T')[0] + "/1";
+            // days[j].setAttributeNode(attr)
+
             if(days[j].innerHTML === ""){
                 
                 days[j].id = "disabled";
@@ -67,12 +84,13 @@ document.addEventListener('DOMContentLoaded', function(){
                     days[j].id = "today";
                 }
             }else{
-                
-                //alert(drawingDate)
+                var jDrawingDate = new Date(year, month, i);
+                var jtodayDate = new Date(today.toDateString());
+                //alert(drawingDate);
                 if(drawingDate.getTime() < today.getTime()){
                     days[j].id = "disabled";
-                    days[j].innerHTML = '';
-                    days[j].className = '';
+                    //days[j].innerHTML = ''; //i am not deleting this to keep past date
+                    days[j].className = 'past-date';
                 }
 
             }
@@ -85,19 +103,36 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     };
     
-    Calendar.prototype.clickDay = function(o) {
-        selectedDay = new Date(year, month, o.innerHTML);
+    Calendar.prototype.clickDay = function(o) {                
+        selectedDay = new Date(year, month, o.innerHTML);                
         var todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        //alert(selectedDay + "/" + todayDateOnly);
         if(selectedDay >= todayDateOnly) {
             var selected = document.getElementsByClassName("selected"),
             len = selected.length;
             if(len !== 0){
                 selected[0].className = "";
             }
-            o.className = "selected";
-            
+            o.className = "selected";            
             this.drawHeader(o.innerHTML);
-            this.setCookie('selected_day', 1);           
+            this.setCookie('selected_day', 1);                            
+
+            //document.getElementById("timesheet").style="display:none;";
+            //document.getElementById("timesheet").className = "visually-hidden";
+            document.getElementById("timesheet").innerHTML=""; //clear the currently visible timesheet contents
+            //htmx.addClass(htmx.find("#timesheet"), "visually-hidden");
+            //htmx.remove(htmx.find)
+            //document.getElementById("timesheet").style="opacity:0";
+
+            //let's trigger HTMX event
+            var originalID = o.id;
+            o.setAttribute("id", "d" + month.toString() + o.innerHTML);
+            htmx.trigger("#d" + month.toString() +o.innerHTML, "once");
+            htmx.process(o);   
+            o.setAttribute("id", originalID);         
+            
+            
+            //htmx.removeClass(htmx.find("#timesheet"), "visually-hidden", 1000);
         }
 
 

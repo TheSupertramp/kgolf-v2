@@ -215,3 +215,7 @@
      transform: scale(0.8);     
  }
  
+ #date-calendar .past-date{
+    text-decoration: line-through;
+    color: rgb(192, 200, 202);
+ }

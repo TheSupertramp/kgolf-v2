@@ -1,8 +1,8 @@
 
 
-<div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">  
+<div class="d-flex flex-column flex-md-row p-4 gap-2 py-md-5 align-items-center justify-content-center">  
 {% for i in range(bays|length) %} 
-  {% if i % 6 == 0 %}<!-- every 6 bays then move column break - open div-->
+  {% if i % 4 == 0 %}<!-- every 6 bays then move column break - open div-->
   <div class="list-group list-group-radio d-grid gap-2 border-0">
   {% endif %}    
     <div class="position-relative">
@@ -12,7 +12,7 @@
         <span class="d-block small opacity-75">{{bays[i]['BayDescription']}}</span>
       </label>
     </div>
-  {% if i % 6 == 5 %} <!-- every 6 bays then move column break - close div-->
+  {% if i % 4 == 3 %} <!-- every 6 bays then move column break - close div-->
   </div>
   {% endif %}        
 {% endfor %}

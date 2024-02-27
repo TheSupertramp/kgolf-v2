@@ -1,19 +1,31 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, render_template_string, jsonify
 from database import get_bays, get_timeslots, get_bookings
-import datetime
+from datetime import datetime, date
 
 app = Flask(__name__)
 
 
 @app.context_processor
 def inject_today_date():
-    return {'today_date': datetime.date.today()}
+    return {'today_date': date.today()}
 
 
 def load_bookings(bookingDate, bayID):
     bookinglist = get_bookings(bookingDate=bookingDate, bayID=bayID)
     return bookinglist
 app.jinja_env.globals['load_bookings']=load_bookings
+
+
+@app.route('/timesheet/<strbookingdate>/<bayID>', methods=['GET'])
+def refresh_timesheet(strbookingdate, bayID):
+    date_format = '%Y-%m-%d'
+    dateBooked = datetime.strptime(strbookingdate, date_format)
+    bookinglist = get_bookings(bookingDate=dateBooked, bayID=bayID)    
+    timeslots = get_timeslots()    
+    templ = """
+    {% include 'timesheet.html' %}
+    """
+    return render_template_string(templ, bookinglist=bookinglist, timeslots=timeslots)
 
 
 @app.route("/")
