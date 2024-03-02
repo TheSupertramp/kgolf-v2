@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../static/styles/timesheet.css">
-
+<h3>{{ dateShowing or today_date }}</h3>
 <div class="container d-flex align-items-center justify-content-center">
   <div id="booking-timesheet" class="booking-timesheet row border border-light-subtle rounded pt-3 pb-4">
     <div class="booking-timeline col justify-content-center">
@@ -13,7 +13,7 @@
     <div class="bays col">
       <div class="bay text-center me-2">
         <div class="bay-label text-center d-flex align-items-center justify-content-center">
-          <p class="bay-label-text mb-auto">Bay 1</p>        
+          <p class="bay-label-text mb-auto">Bay {{ bayID or 1 }}</p>        
         </div>
         <div class="timeslots border border-success rounded">
           

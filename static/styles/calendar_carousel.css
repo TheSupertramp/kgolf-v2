@@ -1,0 +1,51 @@
+#myCarousel .nomonth {
+    opacity: 0;
+    cursor: default !important;
+}
+
+#myCarousel table {
+    justify-self: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    table-layout: fixed;  /* This will make the table column width equal */
+}
+
+#myCarousel .carousel-caption {    
+    height: 100%;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+#myCarousel #booking-calendar :not(.nomonth) {
+    cursor: pointer !important;
+    border-radius: 20px;
+}
+
+#myCarousel #booking-calendar td:hover{
+    /*--tw-shadow:4px 4px 6px 4px rgb(0 0 0 / 0.1), 4px 2px 4px 2px rgb(0 0 0 / 0.1) !important;
+    --tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color) !important;
+    box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important; */
+    background-color:rgb(147, 158, 146);
+    border-radius: 20px;
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    transition: all 0.1s;    
+}
+
+#myCarousel #booking-calendar .today{
+    border-radius: 10px;
+    border-style: double;    
+    border-color: rgb(250, 100, 40);    
+    border-width: 5px;         
+}
+
+#myCarousel #booking-calendar .selected{
+    background-color: rgb(69, 146, 62);
+    --tw-shadow:4px 4px 6px 4px rgb(0 0 0 / 0.1), 4px 2px 4px 2px rgb(0 0 0 / 0.1) !important;
+    --tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color) !important;
+    box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;    
+}

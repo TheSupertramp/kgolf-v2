@@ -65,11 +65,10 @@
                 </div>                
             </div> -->
 
-            <h2 class="text-center mt-5 mb-4">Date</h2>
+            <h2 class="text-center mt-5 mb-4">Please choose date and bay.</h2>
             <div class="">
-                {% include 'calendar.html' %}
-            </div>
-            <button type="button" class="btn btn-primary" hx-get="/timesheet/{{today_date}}/1" hx-target="#timesheet" hx-indicator=".htmx-indicator">load timesheet</button>     
+                {% include 'calendar_carousel.html' %}
+            </div>             
             <h2 class="text-center mt-2 mb-4">Bay</h2>
             <div class="">
                 <p>
@@ -79,7 +78,7 @@
             <h2 class="text-center mt-2 mb-4">Timeslot</h2>
             <div class="justify-content-center text-center mb-5">                                                
                 <div id="timesheet" class="">
-                    <p>Please choose date and bay.</p>
+                    {% include 'timesheet.html' %}
                 </div>                                
                 <img id="timesheet-loadingbar" alt="Timeslots loading..." class="htmx-indicator" width="150" src="../static/img/bars.svg"/>
             </div>
