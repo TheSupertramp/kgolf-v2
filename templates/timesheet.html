@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../static/styles/timesheet.css">
+
 <h3>{{ dateShowing or today_date }}</h3>
 <div class="container d-flex align-items-center justify-content-center">
   <div id="booking-timesheet" class="booking-timesheet row border border-light-subtle rounded pt-3 pb-4">
@@ -11,7 +12,7 @@
       {% endfor %}
     </div>
     <div class="bays col">
-      <div class="bay text-center me-2">
+      <div class="bay text-center">
         <div class="bay-label text-center d-flex align-items-center justify-content-center">
           <p class="bay-label-text mb-auto">Bay {{ bayID or 1 }}</p>        
         </div>
@@ -25,9 +26,9 @@
           {% for i in range(bookinglist|length -1) %}
             {% if bookinglist[i]['BookingID'] is none %} <!--When there is no booking for the slot-->
               {% if i==0 %} <!--very first timeslot row-->
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% else %}                
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% endif %}
               <!--reset namespace variables-->
               {% set ns.currentBookingID = -1 %}
@@ -49,20 +50,20 @@
                     {% set marginBottomIndex = 0 %}
                   {% endif %}
                   <div class="row event-inner mt-n{{(marginBottomIndex + 1) % 2}}">
-                    <div class="col col-1">
+                    <div class="col col-1 event-inner-deco-left">
                       <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
                     </div>
                     <div class="col col-10">
                       <div class="title mb-{{marginBottomIndex}}">{{bookinglist[i]['BookingTypeName']}}</div>
                       <div class="time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</div>
                     </div>
-                    <div class="col col-1">
+                    <!-- <div class="col col-1 event-inner-deco-right">
                       <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
-                    </div>                    
+                    </div>                     -->
                   </div>                  
                 </div>
                 {% if bookinglist[i]['ID'] != bookinglist[i+1]['ID'] %}
-                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-hidden">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
                 {% endif %}
               {% endif %}
             {% endif %}
@@ -82,6 +83,10 @@
     </div>
   </div>
 </div>
+
 {% autoescape false %}
 <!-- {{ load_bookings(today_date, 1) }} -->
 {% endautoescape %}
+
+
+{% include 'timesheet_modal.html' %}
