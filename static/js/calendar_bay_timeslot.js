@@ -12,10 +12,12 @@ document.addEventListener('DOMContentLoaded', function(){
     // })
 
     //check the first bay by default when page load
-    var firstBay = document.getElementById('listGroupRadioGrid1');
-    firstBay.checked = true;
+    // var firstBay = document.getElementById('listGroupRadioGrid1');
+    // firstBay.checked = true;
 
-    //
+    //////////////
+    // Calendar //
+    //////////////
     var selectedDateCells = document.querySelectorAll('td[hx-post]');    
     selectedDateCells.forEach(td => td.addEventListener('htmx:configRequest', (event) => {        
         var selectedBays = document.querySelectorAll('[id^=listGroupRadioGrid]:checked');        
@@ -27,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function(){
         }        
     }))
 
+    /////////
+    // Bay //
+    /////////
     var selectedBayElements = document.querySelectorAll('input[hx-post]');    
     selectedBayElements.forEach(i => i.addEventListener('htmx:configRequest', (event) => {     
         // Get selected bay number
@@ -42,13 +47,25 @@ document.addEventListener('DOMContentLoaded', function(){
         }        
     }))    
 
+    //////////////
+    // Timeslot //
+    //////////////    
+    // let timeslotElements = document.querySelectorAll('div.timeslots div[hx-post][id^=timeslot]');    
+    // timeslotElements.forEach(ts => ts.addEventListener('htmx:configRequest', (event) => {        
+    //     let hxVals= JSON.parse(ts.getAttribute('hx-vals'))
+    //     let timeslotID = hxVals.timeslotID;
+    //     alert(timeslotID);
+    //     event.detail.path = event.detail.path.replace("[[timeslotID]]", timeslotID);
+    // }))
 }, false);
 
 
 function selectNewDate(e) {
     //Remove existing selection info
-    var currentSelection = document.querySelector('.selected');
-    currentSelection.classList.remove('selected');
+    var currentSelection = document.querySelector('td.selected');
+    if(currentSelection!=null){
+        currentSelection.classList.remove('selected');
+    }    
         
     //Assign to the new one.
     e.classList.add('selected');

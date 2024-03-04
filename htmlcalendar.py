@@ -31,7 +31,7 @@ WEEKDAYS1 = [WEEKDAYS0[6]] + list(WEEKDAYS0[0:6])
 EMPTY_ROW = "<tr>" + 7 * '<td class="nomonth">&nbsp;</td>' + "</tr>"
 
 
-def htmlday(date, classes, classes_today, links, td_custom_attribute_string):
+def htmlday(date, classes, classes_today, links, td_custom_attribute_string, is_selected):
     result = []
     cs = classes(date)    
     ls = links(date)
@@ -43,13 +43,17 @@ def htmlday(date, classes, classes_today, links, td_custom_attribute_string):
     merged_class_values = ""
     common_class_values = ""
     today_class_values = ""
+    selected_class_value = ""
     if cs:
         common_class_values = " ".join(cs)        
 
     if classes_today:
         today_class_values = " ".join(classes_today)
 
-    merged_class_values = common_class_values + " " + today_class_values    
+    if is_selected:
+        selected_class_value = "selected"
+
+    merged_class_values = common_class_values + " " + today_class_values + " " + selected_class_value 
 
     if len(merged_class_values.strip()) > 0:
         result.append(f'<td class="{merged_class_values.strip()}"{other_attributes_strings}>')
@@ -77,7 +81,7 @@ def html_week_days(caltype):
 
 def htmlmonth(month, year, classes=nolist, links=nostr, nomonth=nolist,
               th_classes=[], table_classes=[], table_id="", caltype=0, show_year=True, show_month=True,
-              classes_today=[], td_custom_attribute_string=""):
+              classes_today=[], currentSelectedDate=datetime.date.today(), td_custom_attribute_string=""):
     result = []
     week_count = 0
     if show_year:        
@@ -102,15 +106,19 @@ def htmlmonth(month, year, classes=nolist, links=nostr, nomonth=nolist,
     result.append(html_week_days(caltype))
     cal = calendar.Calendar(caltype)
     for date in cal.itermonthdates(year, month):
+        is_selectedDate = False
+        if date == currentSelectedDate:
+            is_selectedDate = True
+
         if date.weekday() == 0:
             week_count += 1
             result.append("<tr>\n")
         if date.month != month:
-            result.append(htmlday(date, nomonth, [], nostr, ""))
+            result.append(htmlday(date, nomonth, [], nostr, "", False))
         elif date == date.today():
-            result.append(htmlday(date, classes, classes_today, links, td_custom_attribute_string))
+            result.append(htmlday(date, classes, classes_today, links, td_custom_attribute_string, is_selectedDate))
         else:
-            result.append(htmlday(date, classes, [], links, td_custom_attribute_string))
+            result.append(htmlday(date, classes, [], links, td_custom_attribute_string, is_selectedDate))
         if date.weekday() == 6:
             result.append("</tr>\n")
     if week_count == 5:
@@ -158,6 +166,7 @@ def htmlcalendar(starting_date,
                  show_year=True, 
                  show_month=True,
                  classes_today=[],
+                 currentSelectedDate=datetime.date.today(),
                  td_custom_attribute_string=""):
     """
     Main function that takes a starting date and returns a list of
@@ -213,6 +222,7 @@ def htmlcalendar(starting_date,
                                 show_year=show_year, 
                                 show_month=show_month,
                                 classes_today=classes_today,
+                                currentSelectedDate=currentSelectedDate,
                                 td_custom_attribute_string=td_custom_attribute_string)
         )
     return reversed(result)

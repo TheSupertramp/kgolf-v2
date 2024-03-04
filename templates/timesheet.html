@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="../static/styles/timesheet.css">
+<!-- <link rel="stylesheet" href="../static/styles/timesheet.css"> -->
 
-<h3>{{ dateShowing or today_date }}</h3>
+<h3>{{ dateBooking.strftime('%a %d/%m/%Y') or today_date.strftime('%a %d/%m/%Y') }}</h3>
 <div class="container d-flex align-items-center justify-content-center">
   <div id="booking-timesheet" class="booking-timesheet row border border-light-subtle rounded pt-3 pb-4">
     <div class="booking-timeline col justify-content-center">
@@ -26,9 +26,9 @@
           {% for i in range(bookinglist|length -1) %}
             {% if bookinglist[i]['BookingID'] is none %} <!--When there is no booking for the slot-->
               {% if i==0 %} <!--very first timeslot row-->
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% else %}                
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML" hx-vals='{"timeslotID":{{bookinglist[i]['ID']}}}'><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% endif %}
               <!--reset namespace variables-->
               {% set ns.currentBookingID = -1 %}
@@ -63,7 +63,7 @@
                   </div>                  
                 </div>
                 {% if bookinglist[i]['ID'] != bookinglist[i+1]['ID'] %}
-                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
                 {% endif %}
               {% endif %}
             {% endif %}
@@ -85,8 +85,9 @@
 </div>
 
 {% autoescape false %}
-<!-- {{ load_bookings(today_date, 1) }} -->
+
 {% endautoescape %}
 
-
-{% include 'timesheet_modal.html' %}
+<div id="timesheet-booking-modal">
+  {% include 'timesheet_modal.html' %}
+</div>

@@ -1,0 +1,73 @@
+
+      <div class="modal-header">
+          <img width="32px" src="../static/img/golf-outline.svg"/>
+          <h1 class="modal-title fw-bold fs-4 ms-4" id="bookingFormModalLabel">Book your game</h1>          
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form id="booking-detail-form" class="">   
+
+              <h2 class="fs-5 mb-3">
+                  <!-- <img width="20px" src="../static/img/clock-fill.svg"/>                         -->
+                  Confirm your booking time
+              </h2>
+              <h4 class="fs-5 fw-bold mb-2">{{ dateBooking.strftime('%a %d/%m/%Y') or 'not defined' }}</h4>        
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="form-floating mb-2">
+                    <select name="floatingInputStartTime" id="floatingInputStartTime" class="form-control rounded-3 w-100" required>
+                        {% if availableStartTimeslots is not none %}             
+                            {% for ts in availableStartTimeslots %}           
+                                <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}" 
+                                {% if ts['ID'] | int == selectedTimeslotID | int %}
+                                    selected
+                                {% endif %}>
+                                {{ts['HourValue']}}{{ts['MinuteValue']}}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="floatingInputStartTime">Start time</label>
+                  </div>             
+                </div>   
+                <div class="col-6">
+                  <div class="form-floating mb-2">
+                    <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" required>         
+                        <!-- TODO: Make End Time list refresh based on Start Time selection -->
+                        {% if availableEndTimeslots is not none %}             
+                            {% for ts in availableEndTimeslots %}           
+                                <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}">{{ts['HourValue']}}{{ts['MinuteValue']}}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    <label for="floatingInputEndTime">End time</label>
+                  </div>  
+                </div>        
+              </div>         
+              <div class="form-floating mb-2">Duration: </div>
+
+              <h2 class="fs-5 mb-3">
+                  <!-- <img width="20px" src="../static/img/person-lines-fill.svg"/> -->
+                  Please provide your details
+              </h2>
+              <div class="form-floating mb-2">
+                <input type="email" class="form-control rounded-3" id="floatingInputEmail" placeholder="name@example.com">
+                <label for="floatingInputEmail">Email address</label>
+              </div>
+              <div class="form-floating mb-2">
+                  <input type="tel" class="form-control rounded-3" id="floatingInputMobileNumber" pattern="[0-9]{14}" minlength="9" maxlength="14" placeholder="021xxxxxx">
+                  <label for="floatingInputMobileNumber">Mobile number</label>
+                </div>                
+              <div class="form-floating mb-0">
+                <input type="password" class="form-control rounded-3" id="floatingInputPassword" placeholder="4-digit password">
+                <label for="floatingInputPassword">4-digit password</label>
+              </div>
+              <!-- <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign up</button> -->
+              <!-- <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small> -->
+              <!-- <hr class="my-4">                 -->
+            </form>
+      </div>
+      <p><small class="text-body-secondary">By clicking Book now, you agree to the terms of use.</small></p>
+      <div class="modal-footer align-items-center justify-content-center">                                
+          <button type="submit" class="w-50 btn btn-lg btn-primary" form="booking-detail-form">Book now</button>
+          <button type="button" class="w-50 btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>            
+      </div>

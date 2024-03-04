@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, text
 import os
 import datetime
 
+
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
 engine = create_engine(
@@ -82,3 +83,85 @@ def get_bookings(bookingDate, bayID):
         return bookings        
 
 
+def get_availableStartTimeslots(strBookingDate, bayID):
+    query = f"""
+            SELECT
+                TS.*,
+                time_format(TS.TimeValue, '%l:%i %p') AS `HourNameDisplay`    
+            FROM Timeslot TS
+            LEFT JOIN  (
+                SELECT
+                    BH.ID As `BookingID`,        
+                    BTD.TimeslotID,
+                    CASE
+                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
+                            'Start'
+                        WHEN lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
+                            'End'
+                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) = lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) THEN
+                            'Between'
+                        ELSE
+                            NULL
+                    END AS `BookingTimePoint`
+                FROM BookingHeader BH		
+                INNER JOIN BookingTimeDetail BTD 
+                    ON BH.ID = BTD.BookingHeaderID	        	
+                WHERE
+                    BH.IsActive = 1        
+                    AND BH.BookingDate = '{strBookingDate}'
+                    AND BH.BayID = {bayID}           
+                    AND BTD.IsActive = 1
+            ) Bookings 
+                ON TS.ID = Bookings.TimeslotID
+                    AND Bookings.BookingTimePoint != 'End'
+            WHERE
+                Bookings.BookingID IS NULL 
+            ORDER BY
+                TS.ID ASC                
+            """    
+    with engine.connect() as conn:
+        result = conn.execute(text(query))
+        availableTimeslots = [ts._asdict() for ts in result.all()]
+        return availableTimeslots          
+
+
+def get_availableEndTimeslots(strBookingDate, bayID):
+    query = f"""
+            SELECT
+                TS.*,
+                time_format(TS.TimeValue, '%l:%i %p') AS `HourNameDisplay`    
+            FROM Timeslot TS
+            LEFT JOIN  (
+                SELECT
+                    BH.ID As `BookingID`,        
+                    BTD.TimeslotID,
+                    CASE
+                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
+                            'Start'
+                        WHEN lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
+                            'End'
+                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) = lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) THEN
+                            'Between'
+                        ELSE
+                            NULL
+                    END AS `BookingTimePoint`
+                FROM BookingHeader BH		
+                INNER JOIN BookingTimeDetail BTD 
+                    ON BH.ID = BTD.BookingHeaderID	        	
+                WHERE
+                    BH.IsActive = 1        
+                    AND BH.BookingDate = '{strBookingDate}'
+                    AND BH.BayID = {bayID}           
+                    AND BTD.IsActive = 1
+            ) Bookings 
+                ON TS.ID = Bookings.TimeslotID
+                    AND Bookings.BookingTimePoint != 'Start'
+            WHERE
+                Bookings.BookingID IS NULL 
+            ORDER BY
+                TS.ID ASC                
+            """    
+    with engine.connect() as conn:
+        result = conn.execute(text(query))
+        availableTimeslots = [ts._asdict() for ts in result.all()]
+        return availableTimeslots              

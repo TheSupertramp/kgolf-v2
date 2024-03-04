@@ -40,15 +40,24 @@
     width: 100%;
   }
 
- .booking-timeline {
-    display: grid;
-    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-    font-size: 0.75rem;
-    min-width: 3.5rem;
-    margin-top: -9px;
-    padding-left: 1rem;
-    padding-right: 0px;
+  @media screen and (min-width: 600px) {
+    .booking-timeline {
+      display: grid;
+      grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+      font-size: 0.75rem;
+      min-width: 3.5rem;
+      margin-top: -9px;
+      padding-left: 1rem;
+      padding-right: 0px;
+    }
   }
+
+  @media screen and (max-width: 599px) {
+    .booking-timeline {
+      display: none;
+    }
+  }
+
 
   .timeslots { 
     display: grid;
