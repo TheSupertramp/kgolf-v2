@@ -1,0 +1,53 @@
+<!-- <div class="modal-body" hx-trigger="load delay:10s" hx-target="#timesheet" hx-post="/timesheet/{{bookingDateSubmitted.strftime('%Y-%m-%d')}}/{{bookingBayID}}" hx-indicator="#timesheet-loadingbar" hx-swap="innerHTML show:bottom">     -->
+<div class="modal-body">    
+    <h2 class="fs-5 mb-3">
+        <img width="20px" src="../static/img/done_FILL0_wght400_GRAD0_opsz24.svg"/>
+        Your booking request has been submitted.
+    </h2>
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="text" class="form-control rounded-3 w-100" id="floatingBookingDate" value="{{ bookingDateSubmitted.strftime('%a %d/%m/%Y') or 'not defined' }}" readonly>
+        <label for="floatingBookingDate">Date:</label>        
+    </div>        
+    <div class="row g-2">
+        <div class="col-6">
+        <div class="form-floating mb-2 fw-semibold">
+            <input type="text" class="form-control rounded-3 w-100" id="floatingInputStartTime" value="{{bookingStartTimeText}}" readonly>
+            <label for="floatingInputStartTime">Start time</label>
+        </div>             
+        </div>   
+        <div class="col-6">
+        <div class="form-floating mb-2 fw-semibold">
+            <input type="text" class="form-control rounded-3 w-100" id="floatingInputEndTime" value="{{bookingEndTimeText}}" readonly>
+            <label for="floatingInputEndTime">End time</label>
+        </div>  
+        </div>        
+    </div>         
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="text" class="form-control rounded-3 w-100" id="floatingDuration" value="{{bookingDuration_hourpart}} Hour(s) {{bookingDuration_minutepart}} Minute(s)" readonly>
+        <label for="floatingDuration">Duration:</label>        
+    </div>
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="text" class="form-control rounded-3 w-100" id="floatingBay" value="{{bookingBayName}} ({{bookingBayDesc}})" readonly>
+        <label for="floatingBay">Bay</label>        
+    </div>    
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="text" class="form-control rounded-3 w-100" id="floatingBookingType" value="{{bookingTypeName}}" readonly>
+        <label for="floatingBookingType">Booking type</label>
+    </div>
+
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="text" class="form-control rounded-3" id="floatingInputFullname" value="{{bookingFullname}}" readonly>
+        <label for="floatingInputFullname">Full name</label>
+    </div>                           
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="email" class="form-control rounded-3" id="floatingInputEmail" value="{{bookingEmail}}" readonly>
+        <label for="floatingInputEmail">Email address</label>
+    </div>
+    <div class="form-floating mb-2 fw-semibold">
+        <input type="tel" class="form-control rounded-3" id="floatingInputMobileNumber" value="{{bookingPhone}}" readonly>
+        <label for="floatingInputMobileNumber">Mobile number</label>
+        </div>                
+</div>
+<div class="modal-footer align-items-center justify-content-center">
+    <button type="button" class="w-50 btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>            
+</div>

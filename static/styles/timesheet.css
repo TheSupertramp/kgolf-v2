@@ -91,6 +91,12 @@
     box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
   }
 
+  .hover\:shadow-md-unavailable:hover{
+    cursor:default; 
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
   .timeslot-info-watermark{
     display:block;
     color:rgb(206, 206, 206);   
