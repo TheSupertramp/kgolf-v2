@@ -97,14 +97,19 @@ def get_availableEndTimes(strbookingdate, bayID):
     return render_template_string(templ, endtimes=endtimes)
 
 @app.route('/get/duration', methods=['POST'])
-def get_duration():
-    selectedStartimeSlotID = int(request.form['floatingInputStartTime'])
-    selectedEndtimeSlotID = int(request.form['floatingInputEndTime'])
-    bookingDuration_in_minute = (selectedEndtimeSlotID - selectedStartimeSlotID) * 15
-    bookingDuration_hourpart = int(bookingDuration_in_minute / 60)
-    bookingDuration_minutepart = bookingDuration_in_minute % 60    
-    templ = f"""{bookingDuration_hourpart} Hour(s) {bookingDuration_minutepart} Minute(s)"""
-    return render_template_string(templ)
+def get_duration():        
+    if request.method == 'POST'and request.form['floatingInputStartTime'] != '':
+        selectedStartimeSlotID = int(request.form['floatingInputStartTime'])
+        selectedEndtimeSlotID = int(request.form['floatingInputEndTime'])
+        bookingDuration_in_minute = (selectedEndtimeSlotID - selectedStartimeSlotID) * 15
+        bookingDuration_hourpart = int(bookingDuration_in_minute / 60)
+        bookingDuration_minutepart = bookingDuration_in_minute % 60    
+        templ = f"""{bookingDuration_hourpart} Hour(s) {bookingDuration_minutepart} Minute(s)"""
+        return render_template_string(templ)
+    else:
+        return ""
+    
+        
 
 @app.route('/book', methods=['POST'])
 def submit_booking():

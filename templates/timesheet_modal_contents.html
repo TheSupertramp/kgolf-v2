@@ -32,7 +32,7 @@
                   </div>   
                   <div class="col-6">
                     <div class="form-floating mb-2">
-                      <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" hx-post="/get/duration" hx-target="#bookingDuration" hx-trigger="load once, change"  required>                                   
+                      <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" hx-post="/get/duration" hx-target="#bookingDuration" hx-trigger="intersect once, change"  required>                                   
                           {% if availableEndTimeslots is not none %}             
                               {% for ts in availableEndTimeslots %}           
                                   <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}">{{ ts['HourNameDisplay'] }}</option>
