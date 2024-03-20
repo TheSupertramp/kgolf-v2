@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 # DB stuff
 
+
 db_connection_string = os.environ['DB_CONNECTION_STRING']
 
 engine = create_engine(
