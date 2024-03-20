@@ -6,7 +6,7 @@
       </div>
       <div id=modal-content-body-footer>
         <div class="modal-body">
-            <form id="booking-detail-form" class="" hx-post="/book" hx-target="#modal-content-body-footer" hx-swap="innerHTML">   
+            <form id="booking-detail-form" class="" hx-post="/book" hx-target="#modal-content" hx-swap="innerHTML">   
                 <input type="hidden" name="bookingBayID" value="{{bayID}}">
                 <h2 class="fs-5 mb-3">
                     <!-- <img width="20px" src="../static/img/clock-fill.svg"/>-->
@@ -16,7 +16,7 @@
                 <div class="row g-2">
                   <div class="col-6">
                     <div class="form-floating mb-2">
-                      <select name="floatingInputStartTime" id="floatingInputStartTime" class="form-control rounded-3 w-100" hx-post="/get/endtimes/{{dateBooking}}/{{bayID}}/" hx-target="#floatingInputEndTime" required >
+                      <select name="floatingInputStartTime" id="floatingInputStartTime" class="form-control rounded-3 w-100" hx-post="/get/endtimes/{{dateBooking}}/{{bayID}}" hx-target="#floatingInputEndTime" required >
                           {% if availableStartTimeslots is not none %}             
                               {% for ts in availableStartTimeslots %}           
                                   <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}" 
@@ -32,8 +32,7 @@
                   </div>   
                   <div class="col-6">
                     <div class="form-floating mb-2">
-                      <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" required>         
-                          <!-- TODO: Make End Time list refresh based on Start Time selection -->
+                      <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" hx-post="/get/duration" hx-target="#bookingDuration" hx-trigger="load once, change"  required>                                   
                           {% if availableEndTimeslots is not none %}             
                               {% for ts in availableEndTimeslots %}           
                                   <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}">{{ts['HourValue']}}{{ts['MinuteValue']}}</option>
@@ -44,7 +43,7 @@
                     </div>  
                   </div>        
                 </div>         
-                <div class="form-floating mb-2">Duration: </div>
+                <div class="form-floating mb-2">Duration: <span id="bookingDuration"></span></div>
                 <div class="form-floating mb-2">
                     <select id="floatingInputBookingType" name="bookingType" class="form-control rounded-3" required>
                       <!-- TODO: programtically populate booking type options -->

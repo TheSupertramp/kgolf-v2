@@ -71,10 +71,8 @@
                 {% include 'calendar_carousel.html' %}
             </div>             
             <h2 class="text-center mt-2 mb-4">Bay</h2>
-            <div class="">
-                <p>
-                    {% include 'bays.html' %}
-                </p>
+            <div class="">                
+                {% include 'bays.html' %}                
             </div>
             <h2 class="text-center mt-2 mb-4">Timeslot</h2>
             <div class="justify-content-center text-center mb-5">                                                
@@ -82,6 +80,9 @@
                     {% include 'timesheet.html' %}
                 </div>                                
                 <img id="timesheet-loadingbar" alt="Timeslots loading..." class="htmx-indicator" width="150" src="../static/img/bars.svg"/>
+                <div id="timesheet-booking-modal">
+                    {% include 'timesheet_modal.html' %}
+                </div>
             </div>
             <h2 class="text-center mt-2 mb-4">Contact us</h2>
             <div class="text-center">                

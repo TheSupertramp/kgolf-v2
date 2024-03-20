@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <img width="32px" src="../static/img/golf-outline.svg"/>
+    <h1 class="modal-title fw-bold fs-4 ms-4" id="bookingFormModalLabel">Oops!</h1>          
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body" hx-trigger="load" hx-target="#timesheet" hx-post="/timesheet/{{bookingDateSubmitted.strftime('%Y-%m-%d')}}/{{bookingBayID}}" hx-indicator="#timesheet-loadingbar" hx-swap="innerHTML show:bottom">    
+    <h2 class="fs-5 mb-3">
+        <img width="20px" src="../static/img/error_FILL0_wght400_GRAD0_opsz24.svg"/>
+        Sorry, We could not process your request.
+    </h2>    
+    <h4 class="fs-5 mb-3">Please try again or call us for your booking if this issue persists.</h4>           
+</div>
+<div class="modal-footer align-items-center justify-content-center">
+    <button type="button" class="w-50 btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>            
+</div>

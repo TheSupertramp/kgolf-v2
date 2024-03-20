@@ -142,12 +142,12 @@
     border: 1px solid blue;
   } */
   
-  .title {
+  .booking-title {
     font-weight: 600;
     /* margin-bottom: 0.25rem; */
     font-size: 0.75rem;
   }
-  .time {
+  .booking-time {
     font-size: 0.7rem;
   }
   

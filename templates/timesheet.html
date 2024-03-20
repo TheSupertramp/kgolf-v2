@@ -25,10 +25,12 @@
 
           {% for i in range(bookinglist|length -1) %}
             {% if bookinglist[i]['BookingID'] is none %} <!--When there is no booking for the slot-->
-              {% if i==0 %} <!--very first timeslot row-->
-                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
-              {% elif i < (bookinglist|length-1) and bookinglist[i+1]['BookingID'] is not none %} <!-- when empty row but next row is booked, then we don't want it to be selected by user click -> No modal -->
+              {% if i < (bookinglist|length-1) and bookinglist[i+1]['BookingID'] is not none %} <!-- when empty row but next row is booked, then we don't want it to be selected by user click -> No modal -->
                 <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md-unavailable {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Minimum time for booking is 30 minutes"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+              {% elif i+1 == (bookinglist|length-1) %} <!-- very last slot can't be a booking start time-->
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md-unavailable {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Minimum time for booking is 30 minutes"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>              
+              {% elif i==0 %} <!--very first timeslot row-->
+                <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-first" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>                
               {% else %}                
                 <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md {% if bookinglist[i]['MinuteValue']!=45 %}timeslot-row-blank-fractional-hour{% else %}timeslot-row-blank-full-hour{% endif %}" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML" hx-vals='{"timeslotID":{{bookinglist[i]['ID']}}}'><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
               {% endif %}
@@ -46,6 +48,10 @@
               {% endif %}
               {% if bookinglist[i]['BookingTimePoint'] == "End" %} <!--If it is booking end timeslot then writes the HTML-->
                 <div id="timeslot{{ns.currentBookingStartTimeslotHour}}{{ '%02d' % ns.currentBookingStartTimeslotMinute}}" class="hover:shadow-md event start-{{ns.currentBookingStartTimeslotHour}}{% if ns.currentBookingStartTimeslotMinute > 0 %}-{{ns.currentBookingStartTimeslotMinute}}{% endif %} end-{{bookinglist[i]['HourValue']}}{% if bookinglist[i]['MinuteValue'] > 0 %}-{{bookinglist[i]['MinuteValue']}}{% endif %} {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}">
+                  {% set isShortSession = false %}
+                  {% if ((bookinglist[i]['HourValue'] * 60) + bookinglist[i]['MinuteValue']) - ((ns.currentBookingStartTimeslotHour * 60) + ns.currentBookingStartTimeslotMinute) < 45 %}
+                    {% set isShortSession = true %}
+                  {% endif %}
                   {% if ((bookinglist[i]['HourValue'] * 60) + bookinglist[i]['MinuteValue']) - ((ns.currentBookingStartTimeslotHour * 60) + ns.currentBookingStartTimeslotMinute) >= 60 %}
                     {% set marginBottomIndex = 1 %}
                   {% else %}
@@ -56,8 +62,14 @@
                       <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
                     </div>
                     <div class="col col-10">
-                      <div class="title mb-{{marginBottomIndex}}">{{bookinglist[i]['BookingTypeName']}}</div>
-                      <div class="time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</div>
+                      <div class="booking-title mb-{{marginBottomIndex}}">{{bookinglist[i]['BookingTypeName']}}
+                        {% if isShortSession == true %}
+                          ({{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}})
+                        {% endif %}
+                      </div>
+                      {% if isShortSession == false %}
+                        <div class="booking-time">{{ns.currentBookingStartTimeslotHourNameDisplay}} - {{bookinglist[i]['HourNameDisplay']}}</div>
+                      {% endif %}                      
                     </div>
                     <!-- <div class="col col-1 event-inner-deco-right">
                       <div class="event-inner-deco {{bookinglist[i]['BookingTypeName']|lower|replace(" ","-")}}-deco-bgcolor"></div>
@@ -65,7 +77,13 @@
                   </div>                  
                 </div>
                 {% if bookinglist[i]['ID'] != bookinglist[i+1]['ID'] %}
-                  <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                  {% if i < (bookinglist|length-1) and bookinglist[i+1]['BookingID'] is not none %} <!-- when empty row but next row is booked, then we don't want it to be selected by user click -> No modal -->
+                    <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md-unavailable timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                  {% elif i+1 == (bookinglist|length-1) %} <!-- very last slot can't be a booking start time-->
+                    <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md-unavailable timeslot-row-blank-fractional-hour timeslot-row-afterevent"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>                  
+                  {% else %}
+                    <div id="timeslot{{bookinglist[i]['HourValue']}}{{ '%02d' % bookinglist[i]['MinuteValue']}}" class="hover:shadow-md timeslot-row-blank-fractional-hour timeslot-row-afterevent" data-bs-toggle="modal" data-bs-target="#bookingFormModal" hx-post="/booking/{{dateBooking}}/{{bayID}}/{{bookinglist[i]['ID']}}" hx-target="#modal-content" hx-swap="innerHTML"><span class="timeslot-info-watermark">{{bookinglist[i]['HourNameDisplay']}}</span></div>
+                  {% endif %}
                 {% endif %}
               {% endif %}
             {% endif %}
@@ -77,8 +95,8 @@
         </div>
         <div class="events">
           <div class="event start-2 end-5 virtual-game">
-            <p class="title">Virtual Game</p>
-            <p class="time">2 PM - 5 PM</p>
+            <p class="booking-title">Virtual Game</p>
+            <p class="booking-time">2 PM - 5 PM</p>
           </div>
         </div> -->
       </div>
@@ -90,6 +108,3 @@
 
 {% endautoescape %}
 
-<div id="timesheet-booking-modal">
-  {% include 'timesheet_modal.html' %}
-</div>

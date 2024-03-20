@@ -73,7 +73,7 @@ def refresh_timesheet(strbookingdate, bayID):
 def load_new_booking_form(strbookingdate, bayID, timeslotID):
     dateBooking = datetime.strptime(strbookingdate, date_format).date()
     availableStartTimeslots = get_availableStartTimeslots(strBookingDate=strbookingdate, bayID=bayID)
-    availableEndTimeslots = get_availableEndTimeslots(strBookingDate=strbookingdate, bayID=bayID)
+    availableEndTimeslots = get_availableEndTimeslots(strBookingDate=strbookingdate, bayID=bayID, bookingStartTimeID=timeslotID)
     templ = """
     {% include 'timesheet_modal_contents.html' %}
     """
@@ -89,13 +89,22 @@ def load_new_booking_form(strbookingdate, bayID, timeslotID):
 def get_availableEndTimes(strbookingdate, bayID):
     templ ="""
     {% for et in endtimes %}
-        <option value="{{ }}">{{ }}</option>
+        <option value="{{ et['ID'] }}">{{ et['HourNameDisplay'] }}</option>
     {% endfor %}
     """
-    #selectedStartimeSlotID = request.htmx.
-    endtimes = None #TODO:
+    selectedStartimeSlotID = request.form['floatingInputStartTime']
+    endtimes = get_availableEndTimeslots(strbookingdate, bayID, selectedStartimeSlotID) #TODO: inside configure
     return render_template_string(templ, endtimes=endtimes)
 
+@app.route('/get/duration', methods=['POST'])
+def get_duration():
+    selectedStartimeSlotID = int(request.form['floatingInputStartTime'])
+    selectedEndtimeSlotID = int(request.form['floatingInputEndTime'])
+    bookingDuration_in_minute = (selectedEndtimeSlotID - selectedStartimeSlotID) * 15
+    bookingDuration_hourpart = int(bookingDuration_in_minute / 60)
+    bookingDuration_minutepart = bookingDuration_in_minute % 60    
+    templ = f"""{bookingDuration_hourpart} Hour(s) {bookingDuration_minutepart} Minute(s)"""
+    return render_template_string(templ)
 
 @app.route('/book', methods=['POST'])
 def submit_booking():
@@ -149,9 +158,12 @@ def submit_booking():
                                           bookingEmail=bookingEmail, 
                                           bookingPhone=bookingPhone)
         else:
-            return '''
-                <h3>Failed making a new booking</h3>
-            '''
+            templ = """
+                {% include 'booking_failed.html' %}
+            """
+            return render_template_string(templ,
+                                          bookingDateSubmitted=bookingDateSubmitted, 
+                                          bookingBayID=bookingBayIDSubmitted)        
 
 
 @app.route("/")
@@ -159,9 +171,10 @@ def kgolf_bookingPage():
 
     bays = get_bays()      
     timeslots = get_timeslots()
-    bookinglist = get_bookings(bookingDate=date.today(), bayID=1)    
+    bookinglist = get_bookings(bookingDate=date.today(), bayID=app.jinja_env.globals['bayID'])    
     return render_template('home.html', 
                            bays=bays,
+                           bayID=(app.jinja_env.globals['bayID'] if app.jinja_env.globals['bayID'] is not None else 1),
                            timeslots=timeslots,
                            bookinglist=bookinglist,
                            company_name='KGOLF')

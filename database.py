@@ -3,7 +3,6 @@ import datetime
 from sqlalchemy import BindParameter, cast, create_engine, text, insert, MetaData, Table, Column
 import uuid
 import binascii
-from Crypto.Cipher import AES
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import TypeDecorator
@@ -131,8 +130,20 @@ def get_availableStartTimeslots(strBookingDate, bayID):
             ) Bookings 
                 ON TS.ID = Bookings.TimeslotID
                     AND Bookings.BookingTimePoint != 'End'
+            ,
+            LATERAL (
+                SELECT 
+                    MAX(TS2.ID) + -1 AS `MaxTimeslotID` # -1 to block selecting 10:45pm and after
+                FROM Timeslot TS2
+                WHERE
+                    TS2.IsActive = 1        
+            ) MaxActiveTimeslot              
             WHERE
                 Bookings.BookingID IS NULL 
+                AND TS.IsActive = 1   
+                AND TS.ID <= MaxActiveTimeslot.MaxTimeslotID
+                
+                AND '{datetime.datetime.strftime(datetime.date.today(), "%Y-%m-%d")}' <= '{strBookingDate}' 
             ORDER BY
                 TS.ID ASC                
             """    
@@ -142,39 +153,37 @@ def get_availableStartTimeslots(strBookingDate, bayID):
         return availableTimeslots          
 
 
-def get_availableEndTimeslots(strBookingDate, bayID):
+def get_availableEndTimeslots(strBookingDate, bayID, bookingStartTimeID):
     query = f"""
             SELECT
                 TS.*,
                 time_format(TS.TimeValue, '%l:%i %p') AS `HourNameDisplay`    
-            FROM Timeslot TS
-            LEFT JOIN  (
+            FROM Timeslot TS,
+            LATERAL  (
                 SELECT
-                    BH.ID As `BookingID`,        
-                    BTD.TimeslotID,
-                    CASE
-                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
-                            'Start'
-                        WHEN lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) IS NULL AND BH.ID IS NOT NULL THEN
-                            'End'
-                        WHEN lag(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) = lead(BH.ID) OVER (partition by BH.ID order by BTD.TimeslotID ASC) THEN
-                            'Between'
-                        ELSE
-                            NULL
-                    END AS `BookingTimePoint`
+                    MIN(BTD.TimeslotID) AS `NextBookingTimeslotID`
                 FROM BookingHeader BH		
                 INNER JOIN BookingTimeDetail BTD 
                     ON BH.ID = BTD.BookingHeaderID	        	
                 WHERE
                     BH.IsActive = 1        
                     AND BH.BookingDate = '{strBookingDate}'
-                    AND BH.BayID = {bayID}           
+                    AND BH.BayID = {bayID}          
                     AND BTD.IsActive = 1
-            ) Bookings 
-                ON TS.ID = Bookings.TimeslotID
-                    AND Bookings.BookingTimePoint != 'Start'
+                    AND BTD.TimeslotID > {bookingStartTimeID}      
+            ) Bookings,
+            LATERAL (
+                SELECT 
+                    MAX(TS2.ID) + 1 AS `MaxTimeslot` # + 1 is for 11pm
+                FROM Timeslot TS2
+                WHERE
+                    TS2.IsActive = 1        
+            ) Fallback             
             WHERE
-                Bookings.BookingID IS NULL 
+                TS.ID > {bookingStartTimeID}   + 1 #StartTimeSlot ID + 1 to ensure minimum 30 minutes session
+                AND TS.ID <= IFNULL(Bookings.NextBookingTimeslotID, Fallback.MaxTimeslot)
+                #AND TS.IsActive = 1    
+                AND '{datetime.datetime.strftime(datetime.date.today(), "%Y-%m-%d")}' <= '{strBookingDate}'
             ORDER BY
                 TS.ID ASC                
             """    
@@ -319,33 +328,3 @@ def AddBookingTimeDetails(bookingHeaderID, startTimeslotID, endTimeslotID):
             return None
 
 
-
-# AES Encryption Decryption
-key = uuid.uuid4().bytes
-"""The encryption key.   Random for this example."""
-
-
-nonce = uuid.uuid4().bytes
-"""for WHERE criteria to work, we need the encrypted value to be the same
-each time, so use a fixed nonce if we need that feature.
-"""
-
-def aes_encrypt(data):
-    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
-    data = data + (" " * (16 - (len(data) % 16)))
-    return cipher.encrypt(data.encode("utf-8")).hex()
-
-
-def aes_decrypt(data):
-    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
-    return cipher.decrypt(binascii.unhexlify(data)).decode("utf-8").rstrip()
-
-
-class EncryptedValue(TypeDecorator):
-    impl = String
-
-    def process_bind_param(self, value, dialect):
-        return aes_encrypt(value)
-
-    def process_result_value(self, value, dialect):
-        return aes_decrypt(value)        

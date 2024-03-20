@@ -1,5 +1,10 @@
+<div class="modal-header">
+    <img width="32px" src="../static/img/golf-outline.svg"/>
+    <h1 class="modal-title fw-bold fs-4 ms-4" id="bookingFormModalLabel">Book your game</h1>          
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 <!-- <div class="modal-body" hx-trigger="load delay:10s" hx-target="#timesheet" hx-post="/timesheet/{{bookingDateSubmitted.strftime('%Y-%m-%d')}}/{{bookingBayID}}" hx-indicator="#timesheet-loadingbar" hx-swap="innerHTML show:bottom">     -->
-<div class="modal-body">    
+<div class="modal-body" hx-trigger="load" hx-target="#timesheet" hx-post="/timesheet/{{bookingDateSubmitted.strftime('%Y-%m-%d')}}/{{bookingBayID}}" hx-indicator="#timesheet-loadingbar" hx-swap="innerHTML show:bottom">    
     <h2 class="fs-5 mb-3">
         <img width="20px" src="../static/img/done_FILL0_wght400_GRAD0_opsz24.svg"/>
         Your booking request has been submitted.
