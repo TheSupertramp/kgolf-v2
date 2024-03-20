@@ -23,7 +23,7 @@
                                   {% if ts['ID'] | int == selectedTimeslotID | int %}
                                       selected
                                   {% endif %}>
-                                  {{ts['HourValue']}}{{ts['MinuteValue']}}</option>
+                                  </option>
                               {% endfor %}
                           {% endif %}
                       </select>
@@ -35,7 +35,7 @@
                       <select name="floatingInputEndTime" id="floatingInputEndTime" class="form-control rounded-3 w-100" hx-post="/get/duration" hx-target="#bookingDuration" hx-trigger="load once, change"  required>                                   
                           {% if availableEndTimeslots is not none %}             
                               {% for ts in availableEndTimeslots %}           
-                                  <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}">{{ts['HourValue']}}{{ts['MinuteValue']}}</option>
+                                  <option label="{{ ts['HourNameDisplay'] }}" value="{{ts['ID']}}"></option>
                               {% endfor %}
                           {% endif %}
                       </select>
